@@ -1,12 +1,12 @@
 use Test::More tests => 5; 
 use strict;
 use warnings;
-use XML::Atom::API;
+use XML::Atom::Client;
 
 use_ok( 'XML::Atom::Feed::JavaScript' );
 
-my $api = XML::Atom::API->new();
-isa_ok( $api, 'XML::Atom::API' );
+my $api = XML::Atom::Client->new();
+isa_ok( $api, 'XML::Atom::Client' );
 
 my $feed = $api->getFeed( 
     'http://diveintomark.org/tests/client/http/200.xml' 

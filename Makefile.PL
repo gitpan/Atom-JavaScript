@@ -8,7 +8,7 @@ WriteMakefile(
     'PMLIBDIRS'		=> [ qw( lib/ ) ],
     'AUTHOR'		=> 'David Jacobs <globaldj@mac.com>',
     'PREREQ_PM'		=> { 
-			    'XML::Atom'		=> 0.041,
+			    'XML::Atom'		=> 0.05,
 			    'DateTime'		=> 0,
 			    }
 );

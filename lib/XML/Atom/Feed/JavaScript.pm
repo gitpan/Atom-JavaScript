@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw( XML::Atom::Feed );
 
-our $VERSION = 0.2;
+our $VERSION = 0.4;
 
 =head1 NAME
 
@@ -14,14 +14,14 @@ XML::Atom::Feed::JavaScript - Atom syndication with JavaScript
 
     ## get an Atom feed from the network
 
-    use XML::Atom::API;
+    use XML::Atom::Client
     use XML::Atom::Feed::JavaScript;
 
-    my $api = XML::Atom::API->new();
-    my $feed = $api->getFeed( 'http://example.com/atom.xml' );
+    my $client = XML::Atom::Client->new();
+    my $feed = $client->getFeed( 'http://example.com/atom.xml' );
     print $feed->asJavascript();
 
-    ## get an atom feed from disk
+    ## or get an atom feed from disk
 
     use XML::Atom::Feed::JavaScript;
 
@@ -37,22 +37,16 @@ package for outputting Atom feeds as javascript.
 
 =head2 asJavascript()
 
-=head1 AUTHORS
+Returns a XML::Atom::Feed object as a string of JavaScript code. If 
+you want to limit the amount of entries you can pass in an integer argument:
 
-=over 4
-
-=item David Jacobs <globaldj@mac.com>
-
-=item Ed Summers <ehs@pobox.com>
-
-=item Brian Cassidy <brian@altnernation.net>
-
-=back
+    ## limit to first 10 entries
+    my $javascript = $feed->asJavascript( 10 );
 
 =cut
 
 sub XML::Atom::Feed::asJavascript {
-	my ( $feed, $max, $descriptions ) = @_ or die q( can't get feed );
+	my ( $feed, $max ) = @_ or die q( can't get feed );
 
 	my $items = scalar $feed->entries;
 	if ( not $max or $max > $items ) { $max = $items; }
@@ -66,6 +60,7 @@ sub XML::Atom::Feed::asJavascript {
 	$output .= _jsPrint( '<ul class="atom_item_list">' );
 
 	## generate content for each item
+	# foreach (@{ $entry->get_links }) { print $_->{href},"\n"; }
 	foreach my $item ( $feed->entries() ){
 		my $link  = $item->link();
 		my $title = $item->title();
@@ -75,22 +70,16 @@ sub XML::Atom::Feed::asJavascript {
 <span class="rss_item_title">
 <a class="rss_item_link" href="$link">$title</a>
 </span>
+<span class="atom_item_desc">$desc</span>
+</li>
 JAVASCRIPT_TEXT
-
-		if ( $descriptions or not defined ( $descriptions ) ) { 
-		    $data .= " <span class=\"atom_item_desc\">$desc</span>";
-		}
-
-		$data .= '</li>';
 		$output .= _jsPrint( $data );
-
 	}
 	
 	## close our item list, and return 
 	$output .= _jsPrint( '</ul>' );
 	$output .= _jsPrint( '</div>' );
 	return $output;
-
 } 
 
 
@@ -101,5 +90,19 @@ sub _jsPrint {
     $string =~ s/\n//g;	
     return( "document.write('$string');\n" );
 }
-   
+
+=head1 AUTHORS
+
+=over 4
+
+=item David Jacobs <globaldj@mac.com>
+
+=item Ed Summers <ehs@pobox.com>
+
+=item Brian Cassidy <brian@altnernation.net>
+
+=back
+
+=cut
+  
 1;

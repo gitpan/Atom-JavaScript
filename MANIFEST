@@ -2,7 +2,6 @@ Changes
 Makefile.PL
 MANIFEST
 README
-README.txt
 lib/XML/Atom/Feed/JavaScript.pm
 t/use.t
 t/file.t
