@@ -4,18 +4,18 @@ use strict;
 use warnings;
 use base qw( XML::Atom::Feed );
 
-our $VERSION = 0.1;
+our $VERSION = 0.2;
 
 =head1 NAME
 
-XML::Atom::JavaScript - Atom syndication with JavaScript 
+XML::Atom::Feed::JavaScript - Atom syndication with JavaScript 
 
 =head1 SYNOPSIS
 
     ## get an Atom feed from the network
 
     use XML::Atom::API;
-    use XML::Atom::JavaScript;
+    use XML::Atom::Feed::JavaScript;
 
     my $api = XML::Atom::API->new();
     my $feed = $api->getFeed( 'http://example.com/atom.xml' );
@@ -23,7 +23,7 @@ XML::Atom::JavaScript - Atom syndication with JavaScript
 
     ## get an atom feed from disk
 
-    use XML::Atom::JavaScript;
+    use XML::Atom::Feed::JavaScript;
 
     my $feed = XML::Atom::Feed->new( Stream => 'atom.xml' );
     print $feed->asJavascript();
