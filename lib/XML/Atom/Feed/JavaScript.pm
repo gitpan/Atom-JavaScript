@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw( XML::Atom::Feed );
 
-our $VERSION = 0.4;
+our $VERSION = 0.5;
 
 =head1 NAME
 
@@ -48,7 +48,9 @@ you want to limit the amount of entries you can pass in an integer argument:
 sub XML::Atom::Feed::asJavascript {
 	my ( $feed, $max ) = @_ or die q( can't get feed );
 
-	my $items = scalar $feed->entries;
+	my @entries = $feed->entries();
+	my $items   = scalar @entries;
+
 	if ( not $max or $max > $items ) { $max = $items; }
 
 	## open javascript section
@@ -60,15 +62,14 @@ sub XML::Atom::Feed::asJavascript {
 	$output .= _jsPrint( '<ul class="atom_item_list">' );
 
 	## generate content for each item
-	# foreach (@{ $entry->get_links }) { print $_->{href},"\n"; }
-	foreach my $item ( $feed->entries() ){
-		my $link  = $item->link();
+	foreach my $item ( @entries[ 0..$max - 1 ] ) {
+		my $link  = $item->link->href();
 		my $title = $item->title();
 		my $desc  = $item->content->body();
 		my $data  = <<"JAVASCRIPT_TEXT";
 <li class="atom_item">
-<span class="rss_item_title">
-<a class="rss_item_link" href="$link">$title</a>
+<span class="atom_item_title">
+<a class="atom_item_link" href="$link">$title</a>
 </span>
 <span class="atom_item_desc">$desc</span>
 </li>
@@ -99,7 +100,7 @@ sub _jsPrint {
 
 =item Ed Summers <ehs@pobox.com>
 
-=item Brian Cassidy <brian@altnernation.net>
+=item Brian Cassidy <bricas@cpan.org>
 
 =back
 

@@ -7,5 +7,6 @@ t/use.t
 t/file.t
 t/network.t
 t/feed.t
-t/atom.xml
+t/feed.xml
+t/pod.t
 META.yml

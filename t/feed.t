@@ -4,11 +4,11 @@ use warnings;
 
 use_ok( 'XML::Atom::Feed::JavaScript' );
 
-my $feed = XML::Atom::Feed::JavaScript->new(Stream => 't/atom.xml');
+my $feed = XML::Atom::Feed::JavaScript->new(Stream => 't/feed.xml');
 
 ## blessed into correct package
 isa_ok( $feed, 'XML::Atom::Feed::JavaScript' ); 
 
 ## check the title is ok from XML::Atom::Feed::JavaScript
-is( $feed->title(), "hello, typepad", 'title() works ok' );
+is( $feed->title(), "dive into atom", 'title() works ok' );
 
